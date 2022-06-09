@@ -177,7 +177,6 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
   }
 
 
-
   return (
     <Screen navigation={navigation} hideFooter>
       <ScrollView
@@ -465,7 +464,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
             }}
           />
         )}
-        {step != 3 && (
+        {step == 2 && (
           <>
             {isBooking ? <ActivityIndicator size="large" style={styles.Btn} color={Colors.BUTTON} /> : <CustomButton
               containerStyle={[
@@ -482,6 +481,21 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
             />}
           </>
         )}
+
+        {step === 2 && <CustomButton
+          containerStyle={[
+            styles.Btn,
+            { backgroundColor: !isPress ? Colors.GRAY : Colors.BUTTON },
+          ]}
+          text="Confirm"
+          textSize={16}
+          onPress={() => {
+            setIsBooking(true);
+            handleBookingConfirmation();
+
+          }}
+        />}
+
         {/*   <CustomButton
           containerStyle={[
             styles.Btn,

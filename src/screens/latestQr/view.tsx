@@ -62,6 +62,8 @@ const LatestQrView: FC<LatestQrViewProps> = ({ navigation }) => {
   }, []);
 
 
+
+
   useEffect(() => {
     if (myBookings.length > 0) {
 
@@ -112,7 +114,6 @@ const LatestQrView: FC<LatestQrViewProps> = ({ navigation }) => {
                 <LatestQrCard
                   item={item}
                   onShowPress={() => {
-                    /* navigation.navigate('QrCode'); */
                     setTriggeredBooking(item);
                     navigation.navigate('QrCode');
 

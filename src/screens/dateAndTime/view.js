@@ -113,7 +113,6 @@ const DateView = ({
     defaultClosedDates();
   }, []);
 
-
   return (
     <View style={styles.container}>
       {/* Reset dates button */}
@@ -187,6 +186,7 @@ const DateView = ({
           {
             backgroundColor:
               selectedDates.length !== 3 ? Colors.PLACEHOLDER : Colors.BUTTON,
+            marginBottom: 20,
           },
         ]}
         onPress={handleNext}
