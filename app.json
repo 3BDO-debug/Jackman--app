@@ -38,7 +38,7 @@
         "backgroundColor": "#143131"
       },
       "package": "com.bot.jackman",
-      "googleServicesFile": "./google-services.json",
+      
       "versionCode": 2
     },
     "web": {

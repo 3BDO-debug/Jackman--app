@@ -95,7 +95,7 @@ const LaunchingPageView: FC<IProps> = ({
 
         <CustomText text="Join our community " size={12} color="placeholder" />
 
-        <CustomButton
+        {/* <CustomButton
           leftIcon={<Google />}
           leftIconContainerStyle={styles.socialBtnIcon}
           containerStyle={[styles.googleBtn, styles.socialBtn]}
@@ -104,7 +104,7 @@ const LaunchingPageView: FC<IProps> = ({
           textColor="text1"
           textFontFamily="regular"
           onPress={signGoogle}
-        />
+        /> */}
 
         <CustomButton
           leftIcon={<Facebook />}

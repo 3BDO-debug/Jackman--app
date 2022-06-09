@@ -4,18 +4,18 @@ import { View } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
 import { AxiosContext } from "../../context/AxiosContext";
 import * as Facebook from "expo-facebook";
-import useGoogleLogin from "../../hooks/useGoogleLogin";
+ // import useGoogleLogin from "../../hooks/useGoogleLogin";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LaunchingPage = ({ route, navigation }) => {
   const authContext = useContext(AuthContext);
   const { publicAxios } = useContext(AxiosContext);
 
-  const [loadingGoogleLogin, promptGoogleLogin] = useGoogleLogin();
+  //const [loadingGoogleLogin, promptGoogleLogin] = useGoogleLogin();
 
-  const signGoogle = () => {
+  /* const signGoogle = () => {
     promptGoogleLogin();
-  };
+  }; */
 
   const singFacebook = async () => {
     try {
@@ -58,7 +58,7 @@ const LaunchingPage = ({ route, navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <LaunchingPageView
-        signGoogle={signGoogle}
+       
         singFacebook={singFacebook}
         navigation={navigation}
         route={route}
