@@ -60,7 +60,8 @@ const DrawerContent = ({ drawerRef }) => {
         {/* Drawer links wrapper */}
         <View style={styles.drawerLinksWrapper}>
           {drawerLinks.map((drawerLink) => (
-            <TouchableRipple
+            <TouchableOpacity
+            
               onPress={() => {
                 navigation?.navigate(drawerLink.href);
                 drawerRef.current.close();
@@ -70,7 +71,7 @@ const DrawerContent = ({ drawerRef }) => {
                 {drawerLink.icon}
                 <Text style={styles.drawerLinkText}>{drawerLink.label}</Text>
               </View>
-            </TouchableRipple>
+            </TouchableOpacity>
           ))}
         </View>
         <View style={styles.bottomDrawerContainer}>
@@ -124,6 +125,7 @@ const styles = ScaledSheet.create({
     paddingVertical: "70@s",
     justifyContent: "flex-start",
     alignItems: "flex-start",
+    height:"100%",
   },
   avatarWrapper: {
     flexDirection: "row",
@@ -137,7 +139,8 @@ const styles = ScaledSheet.create({
   },
   drawerLinksWrapper: {
     paddingVertical: "110@s",
-    paddingLeft: "35@s",
+    paddingHorizontal: "35@s",
+    
   },
   drawerLinkWrapper: {
     flexDirection: "row",
@@ -165,7 +168,9 @@ const styles = ScaledSheet.create({
   bottomDrawerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingLeft: "27@s",
+    paddingLeft: "17@s",
+    marginTop:110
+    
   },
   logOutItemContainer: {
     flexDirection: "row",

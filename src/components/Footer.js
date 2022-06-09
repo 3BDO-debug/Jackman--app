@@ -32,7 +32,7 @@ export default function Footer({ navigation }) {
 const styles = ScaledSheet.create({
   wrapper: {
     backgroundColor: Colors.BACKGROUND,
-    marginTop: 40,
+    paddingBottom: 50,
   },
   container: {
     flexDirection: "row",

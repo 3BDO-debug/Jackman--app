@@ -26,7 +26,7 @@ const CarHistoryView: FC<CarHistoryViewProps> = ({ route, navigation }) => {
       .then((response) => setCarHistory(response.data.result.data))
       .catch((error) => {
         console.log("error fetching car history", error.response);
-        Alert.alert("OPPS!!", "Error while fetching car history, we are working to fix it soon.")
+        //Alert.alert("OPPS!!", "Error while fetching car history, we are working to fix it soon.")
       })
   }, [authAxios])
 
@@ -34,12 +34,11 @@ const CarHistoryView: FC<CarHistoryViewProps> = ({ route, navigation }) => {
 
   useEffect(() => {
     carHistoryFetcher();
-  }, [carHistoryFetcher]);
+  }, []);
 
 
   return (
     <View style={styles.container}>
-      <LogoImage />
 
       <CustomText
         text={'Car History'}

@@ -130,12 +130,9 @@ const RegisterView: FC<RegisterViewProps> = ({ navigation }) => {
 
   const chassisNumberValidator = () => {
     let valid;
-    if (chasi.length < 5) {
+    if (chasi.trim().length < 5 || chasi.trim().length > 20) {
       valid = false;
-      Alert.alert("Validation error", "Chassis number cannot be less than 5 characters")
-    } else if (chasi.length > 20) {
-      valid = false;
-      Alert.alert("Validation error", "Chassis number cannot be more than 20 characters")
+      Alert.alert("Validation error", "Chassis number must be 5-20 characters")
     } else {
       valid = true;
     }
@@ -144,12 +141,9 @@ const RegisterView: FC<RegisterViewProps> = ({ navigation }) => {
 
   const plateNumberValidator = () => {
     let valid;
-    if (plate.length < 4) {
+    if (plate.trim().length < 4 || plate.trim().length > 8) {
       valid = false;
-      Alert.alert("Validation error", "Plate number cannot be less than 4 characters");
-    } else if (plate.length > 8) {
-      valid = false;
-      Alert.alert("Validation error", "Plate number cannot be more than 8 charaters");
+      Alert.alert("Validation error", "Plate number cannot 4-8 characters");
     } else {
       valid = true;
     }

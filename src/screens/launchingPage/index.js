@@ -53,7 +53,6 @@ const LaunchingPage = ({ route, navigation }) => {
     }
   };
 
-  console.log("dfsa", loadingGoogleLogin);
 
   return (
     <View style={{ flex: 1 }}>

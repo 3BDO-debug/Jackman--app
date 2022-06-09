@@ -8,7 +8,7 @@ const notificationsScreenStyles = ScaledSheet.create({
     backgroundColor: Colors.BACKGROUND,
   },
   titleWrapper: {
-    paddingTop: '75@s',
+    paddingTop: '35@s',
   },
   title: {
     fontFamily: 'Poppins-Bold',

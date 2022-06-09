@@ -126,14 +126,14 @@ const ChooseServiseView: FC<ChooseServiseViewProps> = ({ navigation }) => {
       <View
         style={{
           flex: 1,
-          justifyContent: 'flex-end',
-          marginBottom: 20,
+          marginBottom: 70,
+          justifyContent:"flex-end"
         }}>
         <CustomButton
           rightIcon={<Arrow />}
           containerStyle={[styles.confirtBtn, { backgroundColor: selectedDealer ? Colors.BUTTON : Colors.GRAY }]}
           onPress={() => {
-            console.log("Ds");
+            
 
             setBooking({ ...booking, dealerData: selectedDealer });
             navigation.navigate('Booking');

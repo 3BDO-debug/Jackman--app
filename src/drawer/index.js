@@ -53,6 +53,9 @@ const MyStack = React.forwardRef((props, myStackRef) => {
       />
       <AppStack.Screen name="QrCode" component={QrCode} />
       <AppStack.Screen name="EditCar" component={EditCar} />
+      <AppStack.Screen name="RegisterCar" component={RegisterCar} />
+      <AppStack.Screen name="CarHistory" component={CarHistory} />
+
     </AppStack.Navigator>
   );
 });

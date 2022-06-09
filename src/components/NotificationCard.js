@@ -1,7 +1,7 @@
-import {View, Text, Image} from 'react-native';
-import React from 'react';
-import {ScaledSheet} from 'react-native-size-matters';
-import {Colors} from '../constants/colors';
+import { View, Text, Image } from "react-native";
+import React from "react";
+import { ScaledSheet } from "react-native-size-matters";
+import { Colors } from "../constants/colors";
 
 const NotificationCard = () => {
   return (
@@ -9,10 +9,10 @@ const NotificationCard = () => {
       <View style={styles.container}>
         {/* Avatar wrapper */}
         <View style={styles.avatarWrapper}>
-          <Image source={require('../assets/images/Mercedes-Benz-l.png')} />
+          <Image source={require("../assets/images/Mercedes-Benz-l.png")} />
         </View>
         {/* Details wrapper */}
-        <View>
+        <View style={styles.descriptionContainer}>
           {/* Title */}
           <Text style={styles.title}>Abou Ghaly Motors</Text>
           {/* Body */}
@@ -29,35 +29,36 @@ const styles = ScaledSheet.create({
   wrapper: {
     backgroundColor: Colors.WHITE,
     borderRadius: 18,
-    marginBottom: '20@s',
+    marginBottom: "20@s",
   },
   container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: '30@s',
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: "30@s",
   },
   avatarWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
     width: 100,
     height: 100,
-    paddingTop: '18@s',
+    paddingTop: "18@s",
   },
-  titlesWrapper: {
-    flexDirection: 'column',
+  descriptionContainer: {
+    flexDirection: "column",
   },
   title: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: '14@s',
+    fontFamily: "Poppins-Bold",
+    fontSize: "14@s",
     color: Colors.BLACK,
-    textAlign: 'left',
+    textAlign: "left",
   },
   bodyText: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: '12@s',
+    fontFamily: "Poppins-Regular",
+    fontSize: "12@s",
     color: Colors.BUTTON,
+    width: 190,
+    marginTop: 5,
   },
 });
 

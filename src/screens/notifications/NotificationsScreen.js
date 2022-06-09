@@ -7,7 +7,7 @@ import Screen from "../../components/Screen";
 
 const NotificationsScreen = ({ navigation }) => {
   return (
-    <Screen navigation={navigation}>
+    <Screen navigation={navigation} hideFooter>
       <View style={notificationsScreenStyles.wrapper}>
         {/* Title wrapper */}
         <View style={notificationsScreenStyles.titleWrapper}>

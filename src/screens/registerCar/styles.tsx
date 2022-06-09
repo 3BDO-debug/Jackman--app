@@ -12,6 +12,7 @@ const createStyles = () =>
     },
     contentContainer: {
       backgroundColor: Colors.BACKGROUND,
+      marginTop:-70
     },
     input: {
       fontSize: 11,
