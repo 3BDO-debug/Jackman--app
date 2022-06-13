@@ -137,8 +137,6 @@ const ProfileSittingView: FC<ProfileSittingViewProps> = () => {
         onEditPress={isEdit => {
           if (!isEdit && name != userData.name) {
             let checkName = /[A-Za-z0-9][ ]?[A-Za-z]+[ ]?[A-Za-z0-9]/.test(name);
-            console.log("Da", checkName);
-
             if (!checkName && name !== "") {
               Alert.alert("Only letters(a-z) and numbers(0-9) are allowed")
             } else if (name === "") {

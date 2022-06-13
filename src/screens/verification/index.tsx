@@ -1,5 +1,5 @@
-import React, {FC, useEffect} from 'react';
-import {NavigationProp, ParamListBase} from '@react-navigation/native';
+import React, { FC, useEffect } from 'react';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import VerificationView from './view';
 
 
@@ -7,14 +7,14 @@ interface VerificationProps {
   navigation: NavigationProp<ParamListBase>;
 }
 
-const Verification: FC<VerificationProps> = ({navigation}) => {
-  
+const Verification: FC<VerificationProps> = ({ route, navigation }) => {
 
-  
+
+
   return (
     <>
-      <VerificationView navigation={navigation} />
-     
+      <VerificationView navigation={navigation} route={route} />
+
     </>
   );
 };

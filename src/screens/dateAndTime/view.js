@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { View, Alert, Platform } from "react-native";
+import { View, Alert, Platform, Text, Modal, Pressable } from "react-native";
 import createStyles from "./styles";
 import { Arrow } from "../../constants/svg";
 import CustomButton from "../../components/customButton";
@@ -158,23 +158,17 @@ const DateView = ({
           }
           disabledDatesTextStyle={{ color: Colors.PLACEHOLDER }}
           nextComponent={<Arrow style={{ marginRight: 10 }} />}
-          minDate={new Date().getDate() + 1}
-          maxDate={
-            new Date(
-              new Date().getFullYear(),
-              new Date().getMonth() + 2,
-              new Date().getDay()
-            )
-          }
+          minDate={new Date()}
           restrictMonthNavigation
           disabledDates={closedDates}
         />
       </View>
+
       {showTimePicker && (
         <DateTimePicker
           value={currentSelectedTime || new Date()}
           mode="time"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
+          display={"spinner"}
           is24Hour={false}
           onChange={onTimePickerChange}
         />
@@ -186,7 +180,7 @@ const DateView = ({
           {
             backgroundColor:
               selectedDates.length !== 3 ? Colors.PLACEHOLDER : Colors.BUTTON,
-            marginBottom: 20,
+            marginBottom: 30,
           },
         ]}
         onPress={handleNext}

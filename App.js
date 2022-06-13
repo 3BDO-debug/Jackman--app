@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 import { RecoilRoot } from "recoil";
 import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ActivityIndicator, StatusBar, View } from "react-native";
+import { StatusBar } from "react-native";
 // context
 import { AuthProvider } from "./src/context/AuthContext";
 import { AxiosProvider } from "./src/context/AxiosContext";

@@ -56,9 +56,15 @@ const AdditionalInformationView: FC<AdditionalInformationViewProps> = ({
 
   const phoneNumberValidator = () => {
     let valid;
-    if (!/^\+|00201[0-5]+[0-9]+$/.test(phone)) {
-      valid = false;
-      Alert.alert("Validation error", "Phone number not valid");
+    const phoneExp = phone.toString().slice(0, 4) === "0020";
+    if (!/^\+20\d[10]/.test(phone)) {
+      if (phoneExp) {
+        valid = true
+      } else {
+        valid = false;
+        Alert.alert("Validation error", "Phone number not valid");
+      }
+
     } else {
       valid = true;
     }

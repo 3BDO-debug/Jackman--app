@@ -122,7 +122,7 @@ export default DrawerContent;
 
 const styles = ScaledSheet.create({
   wrapper: {
-    paddingVertical: "70@s",
+    marginTop: "60@s",
     justifyContent: "flex-start",
     alignItems: "flex-start",
     height:"100%",

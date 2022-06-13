@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState, useCallback, } from 'react';
+import React, { FC, useEffect, useMemo, useState, useCallback, useContext, } from 'react';
 import { Alert, BackHandler, Image, ScrollView, Text, View } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import createStyles from './styles';
@@ -11,6 +11,7 @@ import TextBtn from '../../components/textBtn';
 import { Colors } from '../../constants/colors';
 import { scaleHeightSize } from '../../styles/mixins';
 import { AndroidBackHandler } from "react-navigation-backhandler";
+import { AxiosContext } from '../../context/AxiosContext';
 
 
 
@@ -30,6 +31,8 @@ const LaunchingPageView: FC<IProps> = ({
 
   const [phone, setPhone] = useState('');
   const [phoneErrorCaption, setPhoneErrorCaption] = useState('');
+  const { publicAxios } = useContext(AxiosContext);
+
 
 
   const styles = useMemo(() => createStyles(), []);
@@ -52,6 +55,25 @@ const LaunchingPageView: FC<IProps> = ({
   }, [route.name]);
 
 
+
+  const sendOTPRequest = useCallback(async (phoneNumber) => {
+
+    await publicAxios.post("/user/auth/verify", { phoneNumber: phoneNumber })
+      .then(() => {
+        navigation.navigate("Verification");
+      })
+      .catch((error) => {
+        if (error.response.data.responseCode === "PHONE_NUMBER_EXISTS") {
+          Alert.alert("Phone number exists", "This phone number has already been used before")
+        } else {
+          console.log("Error with sending OTP", error.response.data);
+          Alert.alert("Error", "Something wrong happened while verifying your phone number");
+        }
+
+
+      })
+
+  }, [])
 
 
 
@@ -106,7 +128,7 @@ const LaunchingPageView: FC<IProps> = ({
           onPress={signGoogle}
         /> */}
 
-        <CustomButton
+        {/* <CustomButton
           leftIcon={<Facebook />}
           leftIconContainerStyle={styles.socialBtnIcon}
           containerStyle={styles.socialBtn}
@@ -115,7 +137,7 @@ const LaunchingPageView: FC<IProps> = ({
           textColor="text1"
           textFontFamily="regular"
           onPress={singFacebook}
-        />
+        /> */}
 
         <View style={styles.textWithButtonContainer}>
           <CustomText
@@ -145,21 +167,7 @@ const LaunchingPageView: FC<IProps> = ({
           onPress={() => {
             let validPhone = phone[0] != '0' ? '+20' + phone : '+2' + phone;
             if (/^\+201[0-5]+[0-9]+$/.test(validPhone)) {
-              let data = {
-                phoneNumber: validPhone,
-              };
-              dispatch({
-                type: FETCH,
-                payload: payload({
-                  actionType: 'FETCH',
-                  nextAction: SET_PHONE,
-                  body: data,
-                  serviceUrl: 'VERIFY',
-                  requestMethod: 'POST',
-                  navigateTo: 'Verification',
-                  error: true,
-                }),
-              });
+              sendOTPRequest(validPhone);
               setPhoneErrorCaption('');
             } else setPhoneErrorCaption('* Please enter a valid phone number');
           }}

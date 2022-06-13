@@ -91,7 +91,10 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
       setName(booking?.userData?.userFullname);
       setPhone(booking?.userData?.userPhone);
     }
-  }, [booking]);
+  }, []);
+
+
+
 
 
 
@@ -147,16 +150,25 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
 
 
   const handleBookingConfirmation = async () => {
-    const dealerId = booking?.dealerData.id;
-    const carId = booking?.carData.id;
-    const reqDate1 = moment(booking?.datesData[0].selectedDate).format("YYYY-MM-DD");
-    const reqTime1 = moment(booking?.datesData[0].selectedDate).format("HH:mm:SS");
+    const dealerId = booking?.dealerData?.id;
+    const carId = booking?.carData?.id;
+    const reqDate1 = moment(booking?.datesData[0]?.selectedDate).format("YYYY-MM-DD");
+    const reqTime1 = moment(booking?.datesData[0]?.selectedDate).format("HH:mm:SS");
 
-    const reqDate2 = moment(booking?.datesData[1].selectedDate).format("YYYY-MM-DD");
-    const reqTime2 = moment(booking?.datesData[1].selectedDate).format("HH:mm:SS");
+    const reqDate2 = moment(booking?.datesData[1]?.selectedDate).format("YYYY-MM-DD");
+    const reqTime2 = moment(booking?.datesData[1]?.selectedDate).format("HH:mm:SS");
 
-    const reqDate3 = moment(booking?.datesData[2].selectedDate).format("YYYY-MM-DD");
-    const reqTime3 = moment(booking?.datesData[2].selectedDate).format("HH:mm:SS");
+    const reqDate3 = moment(booking?.datesData[2]?.selectedDate).format("YYYY-MM-DD");
+    const reqTime3 = moment(booking?.datesData[2]?.selectedDate).format("HH:mm:SS");
+
+
+    console.log("book", {
+      dealer: dealerId,
+      car: carId,
+      requestedDate1: `${reqDate1}T${reqTime1}`,
+      requestedDate2: `${reqDate2}T${reqTime2}`,
+      requestedDate3: `${reqDate3}T${reqTime3}`
+    });
 
 
     await authAxios.post("/booking/book", {
@@ -169,11 +181,42 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
       setStep(3);
       Alert.alert("WoooW!, Booking success.")
     }).catch((error) => {
-      navigation.navigate("ChooseCar");
-      Alert.alert(error.response.data.message);
+      console.log("error while booking", error.response.data.message);
+      Alert.alert("OPPPS!", "Something wrong happened while trying to book.");
     });
 
     setIsBooking(false);
+  }
+
+
+  useEffect(() => {
+    if (name !== booking?.userData?.userFullname) {
+      setBooking({ ...booking, userData: { userFullname: name, userPhone: phone, userCarMileage: booking.userData.userCarMileage } })
+    }
+  }, [name])
+
+  useEffect(() => {
+    if (phone !== booking?.userData?.userPhone) {
+      setBooking({ ...booking, userData: { userPhone: phone, userFullname: booking.userData.userFullname, userCarMileage: booking.userData.userCarMileage } })
+    }
+  }, [phone])
+
+
+
+  const validateUserData = () => {
+    let valid;
+    const phoneExp = phone.toString().slice(0, 4) === "0020";
+    if (!/^\+20\d[10]/.test(phone)) {
+      if (phoneExp) {
+        valid = true
+      } else {
+        valid = false;
+      }
+    } else {
+      valid = true;
+    }
+
+    return valid;
   }
 
 
@@ -265,18 +308,16 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                       />
                     </View>
 
-                    {userData?.phoneNumber && (
-                      <View style={[styles.rowItem, styles.rightText]}>
-                        <PhoneNumberIcon />
-                        <CustomText
-                          num={1}
-                          text={userData?.phoneNumber}
-                          color="black"
-                          size={10}
-                          style={styles.textItem}
-                        />
-                      </View>
-                    )}
+                    <View style={[styles.rowItem, styles.rightText]}>
+                      <PhoneNumberIcon />
+                      <CustomText
+                        num={1}
+                        text={phone}
+                        color="black"
+                        size={10}
+                        style={styles.textItem}
+                      />
+                    </View>
                   </View>
                 </>
               ) : (
@@ -300,8 +341,10 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                           Alert.alert("Validation error", "Phone number cannot be empty");
                         }
 
-                        if (name.length > 0 && phone.length > 0) {
+                        if (name.length > 0 && phone.length > 0 && validateUserData()) {
                           setIspress(true);
+                        } else {
+                          Alert.alert("Validation error", "Phone number is not valid")
                         }
 
 
@@ -316,11 +359,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                       inputStyle={styles.input}
                       value={name}
                       onChangeText={text => {
-
-
                         setName(text);
-
-
                       }}
                     />
                   </View>

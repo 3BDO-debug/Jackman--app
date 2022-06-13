@@ -6,11 +6,9 @@ import CustomText from "../../components/customText";
 import FreqQuestion from "../../components/freqQuestion";
 
 
-interface FrequentlyqViewProps {
-    navigation: NavigationProp<ParamListBase>
-}
 
-const FrequentlyqView: FC<FrequentlyqViewProps> = ({ navigation }) => {
+
+const FrequentlyqView: FC<FrequentlyqViewProps> = () => {
 
 
     const styles = useMemo(() => createStyles(), []);
@@ -43,7 +41,8 @@ const FrequentlyqView: FC<FrequentlyqViewProps> = ({ navigation }) => {
             </View>
             <FlatList
                 showsVerticalScrollIndicator={false}
-                data={[{
+                data={[
+                {
                     id: 1,
                     question: 'How does my Jackman app work?',
                     answer: `Users request/book service from the client app, and a mobile mechanic or auto technician, 
@@ -110,7 +109,8 @@ Jackman will not be held liable for anything that occurs to the vehicle`,
                     return (<FreqQuestion
                         item={item}
                         triggeredQuestionState={[triggeredQuestion, setTriggeredQuestion]}
-                    />)
+                    />
+                    )
                 }}
 
 

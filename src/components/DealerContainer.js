@@ -48,7 +48,11 @@ const DealerContainer = ({
 
   return (
     <TouchableOpacity
-      onPress={!pressable && handleLocationPress}
+      onPress={() => {
+        if (!pressable) {
+          handleLocationPress();
+        }
+      }}
       style={styles.wrapper}
     >
       {/* Dealer name */}

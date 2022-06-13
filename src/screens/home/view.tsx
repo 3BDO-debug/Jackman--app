@@ -74,7 +74,7 @@ const HomeView: FC<HomeViewProps> = ({ navigation }) => {
 
   useEffect(() => {
     checkReservationAvailabilty();
-  }, [checkReservationAvailabilty]);
+  }, []);
 
   const backButtonHandler = useCallback(() => {
     /*

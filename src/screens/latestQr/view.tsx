@@ -74,7 +74,7 @@ const LatestQrView: FC<LatestQrViewProps> = ({ navigation }) => {
 
       myBookings.forEach((myBooking) => {
         if (myBooking.status === "pending") {
-          pendingRequestsData.push({ name: myBooking.car.manufacturer.name, requestedDates: [myBooking.requestedDate1, myBooking.requestedDate2, myBooking.requestedDate3], time: moment(myBooking?.requestedDate1).format("hh:mm:A"), ...myBooking });
+          pendingRequestsData.push({ name: myBooking?.car?.manufacturer?.name, requestedDates: [myBooking.requestedDate1, myBooking.requestedDate2, myBooking.requestedDate3], time: moment(myBooking?.requestedDate1).format("hh:mm:A"), ...myBooking });
         } else if (myBooking.status === "approved") {
           acceptedRequestsData.push({ name: myBooking?.car?.manufacturer?.name, requestedDates: [myBooking.requestedDate1, myBooking.requestedDate2, myBooking.requestedDate3], time: moment(myBooking?.requestedDate1).format("hh:mm:A"), ...myBooking });
         } else if (myBooking.status === "rejected") {

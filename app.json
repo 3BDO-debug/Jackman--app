@@ -3,7 +3,6 @@
     "name": "Jackman",
     "slug": "Jackman",
     "version": "2.0.0",
-    "scheme": "mycoolredirect",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

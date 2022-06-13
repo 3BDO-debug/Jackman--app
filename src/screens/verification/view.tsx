@@ -13,9 +13,10 @@ import phoneTokenAtom from '../../recoil/phoneToken';
 
 interface VerificationViewProps {
   navigation: NavigationProp<ParamListBase>;
+  route: any
 }
 
-const VerificationView: FC<VerificationViewProps> = ({ navigation }) => {
+const VerificationView: FC<VerificationViewProps> = ({ route, navigation }) => {
 
 
   const styles = useMemo(() => createStyles(), []);
@@ -36,6 +37,7 @@ const VerificationView: FC<VerificationViewProps> = ({ navigation }) => {
 
   const { publicAxios } = useContext(AxiosContext);
   const [verifying, setVerifying] = useState(false);
+
   const setPhoneToken = useSetRecoilState(phoneTokenAtom);
 
   const verifyOTPRequest = async (data) => {
@@ -55,6 +57,7 @@ const VerificationView: FC<VerificationViewProps> = ({ navigation }) => {
       });
     setVerifying(false);
   };
+
 
 
 
@@ -138,7 +141,7 @@ const VerificationView: FC<VerificationViewProps> = ({ navigation }) => {
           }}
         />
 
-       {/*  <CustomInput
+        <CustomInput
           inputRef={input4}
           value={num4}
           keyboardType="number-pad"
@@ -162,13 +165,13 @@ const VerificationView: FC<VerificationViewProps> = ({ navigation }) => {
               if (token.length == 4) {
                 let data = {
                   otpCode: token,
-                  id: id.toString(),
+                  id: "41",
                 };
                 verifyOTPRequest(data)
               }
             }
           }}
-        /> */}
+        />
 
       </View>}
     </ScrollView>
