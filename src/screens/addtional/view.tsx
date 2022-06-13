@@ -11,6 +11,8 @@ import { Colors } from '../../constants/colors';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import authAtom from '../../recoil/auth';
 import bookingAtom from '../../recoil/booking';
+import phoneNumberValidator from '../../utils/phoneNumberValidator';
+import userFullnameValidator from '../../utils/userFullnameValidator';
 
 interface AdditionalInformationViewProps {
   navigation: NavigationProp<ParamListBase>;
@@ -54,22 +56,7 @@ const AdditionalInformationView: FC<AdditionalInformationViewProps> = ({
   };
 
 
-  const phoneNumberValidator = () => {
-    let valid;
-    const phoneExp = phone.toString().slice(0, 4) === "0020";
-    if (!/^\+20\d[10]/.test(phone)) {
-      if (phoneExp) {
-        valid = true
-      } else {
-        valid = false;
-        Alert.alert("Validation error", "Phone number not valid");
-      }
 
-    } else {
-      valid = true;
-    }
-    return valid
-  }
 
 
   useEffect(() => {
@@ -81,7 +68,6 @@ const AdditionalInformationView: FC<AdditionalInformationViewProps> = ({
   }, [backAction]);
 
 
-  /* Validators */
 
 
   return (
@@ -147,7 +133,7 @@ const AdditionalInformationView: FC<AdditionalInformationViewProps> = ({
         text="CONTINUE"
         textSize={16}
         onPress={() => {
-          if (milageValidator() && phoneNumberValidator()) {
+          if (milageValidator() && phoneNumberValidator(phone) && userFullnameValidator(fullName)) {
             setBooking({ ...booking, userData: { userFullname: fullName, userPhone: phone, userCarMileage: milage } });
             navigation.navigate('Booking', { step: '2' });
           }

@@ -55,6 +55,9 @@ import bookingAtom from '../../recoil/booking';
 import authAtom from '../../recoil/auth';
 import { AxiosContext } from '../../context/AxiosContext';
 import Screen from '../../components/Screen';
+// utils
+import phoneNumberValidator from '../../utils/phoneNumberValidator';
+import userFullnameValidator from '../../utils/userFullnameValidator';
 
 
 interface BookingViewProps {
@@ -162,13 +165,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
     const reqTime3 = moment(booking?.datesData[2]?.selectedDate).format("HH:mm:SS");
 
 
-    console.log("book", {
-      dealer: dealerId,
-      car: carId,
-      requestedDate1: `${reqDate1}T${reqTime1}`,
-      requestedDate2: `${reqDate2}T${reqTime2}`,
-      requestedDate3: `${reqDate3}T${reqTime3}`
-    });
+
 
 
     await authAxios.post("/booking/book", {
@@ -191,33 +188,19 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
 
   useEffect(() => {
     if (name !== booking?.userData?.userFullname) {
-      setBooking({ ...booking, userData: { userFullname: name, userPhone: phone, userCarMileage: booking.userData.userCarMileage } })
+      setBooking({ ...booking, userData: { userFullname: name, userPhone: phone, userCarMileage: booking?.userData?.userCarMileage } })
     }
   }, [name])
 
   useEffect(() => {
     if (phone !== booking?.userData?.userPhone) {
-      setBooking({ ...booking, userData: { userPhone: phone, userFullname: booking.userData.userFullname, userCarMileage: booking.userData.userCarMileage } })
+      setBooking({ ...booking, userData: { userPhone: phone, userFullname: booking?.userData?.userFullname, userCarMileage: booking?.userData?.userCarMileage } })
     }
   }, [phone])
 
 
 
-  const validateUserData = () => {
-    let valid;
-    const phoneExp = phone.toString().slice(0, 4) === "0020";
-    if (!/^\+20\d[10]/.test(phone)) {
-      if (phoneExp) {
-        valid = true
-      } else {
-        valid = false;
-      }
-    } else {
-      valid = true;
-    }
 
-    return valid;
-  }
 
 
   return (
@@ -250,9 +233,9 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
           {/* Instructions text */}
-          <View style={{ justifyContent: "center", alignItems: "center", paddingTop: 10 }}>
+          {step === 1 && < View style={{ justifyContent: "center", alignItems: "center", paddingTop: 10 }}>
             <CustomText text='Please select three dates for booking ' color="white" size={10} />
-          </View>
+          </View>}
         </View>
         {step == 1 && (
           <View style={{ width: windowWidth }}>
@@ -341,7 +324,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                           Alert.alert("Validation error", "Phone number cannot be empty");
                         }
 
-                        if (name.length > 0 && phone.length > 0 && validateUserData()) {
+                        if (userFullnameValidator(name) && phoneNumberValidator(phone)) {
                           setIspress(true);
                         } else {
                           Alert.alert("Validation error", "Phone number is not valid")
@@ -549,7 +532,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
           }}
         /> */}
       </ScrollView>
-    </Screen>
+    </Screen >
   );
 };
 
