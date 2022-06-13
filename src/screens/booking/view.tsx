@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from 'react';
+} from "react";
 import {
   FlatList,
   View,
@@ -18,9 +18,9 @@ import {
   Linking,
   ActivityIndicator,
   Alert,
-} from 'react-native';
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import createStyles from './styles';
+} from "react-native";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import createStyles from "./styles";
 import {
   Arrow,
   CarEditIcon,
@@ -38,27 +38,26 @@ import {
   PhoneNumberIcon,
   CARICON,
   RArrowIcon,
-} from '../../constants/svg';
-import CustomText from '../../components/customText';
-import { scaleHeightSize, scaleWidthSize } from '../../styles/mixins';
-import CustomButton from '../../components/customButton';
-import { Colors } from '../../constants/colors';
-import TextBtn from '../../components/textBtn';
-import CustomInput from '../../components/customInput';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Date, QrCodeBooking } from '..';
+} from "../../constants/svg";
+import CustomText from "../../components/customText";
+import { scaleHeightSize, scaleWidthSize } from "../../styles/mixins";
+import CustomButton from "../../components/customButton";
+import { Colors } from "../../constants/colors";
+import TextBtn from "../../components/textBtn";
+import CustomInput from "../../components/customInput";
+import { ScrollView } from "react-native-gesture-handler";
+import { Date, QrCodeBooking } from "..";
 
-import AdditionalInformationView from '../addtional/view';
-import moment from 'moment';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import bookingAtom from '../../recoil/booking';
-import authAtom from '../../recoil/auth';
-import { AxiosContext } from '../../context/AxiosContext';
-import Screen from '../../components/Screen';
+import AdditionalInformationView from "../addtional/view";
+import moment from "moment";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import bookingAtom from "../../recoil/booking";
+import authAtom from "../../recoil/auth";
+import { AxiosContext } from "../../context/AxiosContext";
+import Screen from "../../components/Screen";
 // utils
-import phoneNumberValidator from '../../utils/phoneNumberValidator';
-import userFullnameValidator from '../../utils/userFullnameValidator';
-
+import phoneNumberValidator from "../../utils/phoneNumberValidator";
+import userFullnameValidator from "../../utils/userFullnameValidator";
 
 interface BookingViewProps {
   navigation: NavigationProp<ParamListBase>;
@@ -66,7 +65,6 @@ interface BookingViewProps {
 }
 
 const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
-
   const [booking, setBooking] = useRecoilState(bookingAtom);
   const userData = useRecoilValue(authAtom).userData;
   const selectedCarName = booking?.carData?.manufacturer.name;
@@ -78,29 +76,22 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
   const selecteDealerLat = "state.carService ? state.carService.latitude : ''";
   const selecteDealerLng = "state.carService ? state.carService.longitude : ''";
 
-  const windowWidth = Dimensions.get('window').width;
+  const windowWidth = Dimensions.get("window").width;
   const [step, setStep] = useState(1);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [isPress, setIspress] = useState(true);
   const [confirm, setconfirm] = useState(false);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(-1);
-
 
   useEffect(() => {
     if (booking) {
       setName(booking?.userData?.userFullname);
       setPhone(booking?.userData?.userPhone);
     }
-  }, []);
-
-
-
-
-
-
+  }, [booking]);
 
   const StepItem = ({ number, title }: { number: string; title: string }) => {
     return (
@@ -112,9 +103,10 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
               backgroundColor:
                 step >= parseInt(number) ? Colors.BUTTON : Colors.WHITE,
             },
-          ]}>
+          ]}
+        >
           <CustomText
-            color={step >= parseInt(number) ? 'white' : 'black'}
+            color={step >= parseInt(number) ? "white" : "black"}
             text={number}
           />
         </View>
@@ -126,7 +118,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
 
   const backAction = useCallback(() => {
     if (step > 1) {
-      setStep(old => old - 1);
+      setStep((old) => old - 1);
     } else {
       navigation.goBack();
     }
@@ -135,14 +127,14 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
 
   useEffect(() => {
     const handler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
+      "hardwareBackPress",
+      backAction
     );
     return () => handler.remove();
   }, [backAction]);
 
   useEffect(() => {
-    if (route.params?.step == '2') {
+    if (route.params?.step == "2") {
       setStep(2);
     }
   }, [route.params]);
@@ -151,72 +143,116 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
 
   const [isBooking, setIsBooking] = useState(false);
 
-
   const handleBookingConfirmation = async () => {
     const dealerId = booking?.dealerData?.id;
     const carId = booking?.carData?.id;
-    const reqDate1 = moment(booking?.datesData[0]?.selectedDate).format("YYYY-MM-DD");
-    const reqTime1 = moment(booking?.datesData[0]?.selectedDate).format("HH:mm:SS");
+    const reqDate1 = moment(booking?.datesData[0]?.selectedDate).format(
+      "YYYY-MM-DD"
+    );
+    const reqTime1 = moment(booking?.datesData[0]?.selectedDate).format(
+      "HH:mm:SS"
+    );
 
-    const reqDate2 = moment(booking?.datesData[1]?.selectedDate).format("YYYY-MM-DD");
-    const reqTime2 = moment(booking?.datesData[1]?.selectedDate).format("HH:mm:SS");
+    const reqDate2 = moment(booking?.datesData[1]?.selectedDate).format(
+      "YYYY-MM-DD"
+    );
+    const reqTime2 = moment(booking?.datesData[1]?.selectedDate).format(
+      "HH:mm:SS"
+    );
 
-    const reqDate3 = moment(booking?.datesData[2]?.selectedDate).format("YYYY-MM-DD");
-    const reqTime3 = moment(booking?.datesData[2]?.selectedDate).format("HH:mm:SS");
+    const reqDate3 = moment(booking?.datesData[2]?.selectedDate).format(
+      "YYYY-MM-DD"
+    );
+    const reqTime3 = moment(booking?.datesData[2]?.selectedDate).format(
+      "HH:mm:SS"
+    );
 
-
-
-
-
-    await authAxios.post("/booking/book", {
-      dealer: dealerId,
-      car: carId,
-      requestedDate1: `${reqDate1}T${reqTime1}`,
-      requestedDate2: `${reqDate2}T${reqTime2}`,
-      requestedDate3: `${reqDate3}T${reqTime3}`
-    }).then(() => {
-      setStep(3);
-      Alert.alert("WoooW!, Booking success.")
-    }).catch((error) => {
-      console.log("error while booking", error.response.data.message);
-      Alert.alert("OPPPS!", "Something wrong happened while trying to book.");
-    });
+    await authAxios
+      .post("/booking/book", {
+        dealer: dealerId,
+        car: carId,
+        requestedDate1: `${reqDate1}T${reqTime1}`,
+        requestedDate2: `${reqDate2}T${reqTime2}`,
+        requestedDate3: `${reqDate3}T${reqTime3}`,
+      })
+      .then(() => {
+        setStep(3);
+        Alert.alert("WoooW!, Booking success.");
+      })
+      .catch((error) => {
+        console.log("error while booking", error.response.data.message);
+        Alert.alert("OPPPS!", "Something wrong happened while trying to book.");
+      });
 
     setIsBooking(false);
-  }
+  };
 
-
-  useEffect(() => {
+  /*   useEffect(() => {
     if (name !== booking?.userData?.userFullname) {
-      setBooking({ ...booking, userData: { userFullname: name, userPhone: phone, userCarMileage: booking?.userData?.userCarMileage } })
+      setBooking({
+        ...booking,
+        userData: {
+          userFullname: name,
+          userPhone: phone,
+          userCarMileage: booking?.userData?.userCarMileage,
+        },
+      });
     }
-  }, [name])
+  }, [name]);
 
   useEffect(() => {
     if (phone !== booking?.userData?.userPhone) {
-      setBooking({ ...booking, userData: { userPhone: phone, userFullname: booking?.userData?.userFullname, userCarMileage: booking?.userData?.userCarMileage } })
+      setBooking({
+        ...booking,
+        userData: {
+          userPhone: phone,
+          userFullname: booking?.userData?.userFullname,
+          userCarMileage: booking?.userData?.userCarMileage,
+        },
+      });
     }
-  }, [phone])
+  }, [phone]); */
 
+  const updateBookingData = useCallback(() => {
 
+    setBooking({
+      ...booking,
+      userData: {
+        userPhone: phone,
+        userFullname: name,
+        userCarMileage: booking?.userData?.userCarMileage,
+      },
+    });
+  }, [name, phone]);
 
-
+  const updateUserDataSubmission = () => {
+    if (!phoneNumberValidator(phone)) {
+      Alert.alert("Validation error", "Phone number is not valid");
+    } else if (!userFullnameValidator(name)) {
+      Alert.alert("Validation error", "User full name is not valid");
+    } else {
+      setIspress(true);
+      updateBookingData();
+    }
+  };
 
 
   return (
     <Screen navigation={navigation} hideFooter>
       <ScrollView
-        keyboardShouldPersistTaps={'handled'}
+        keyboardShouldPersistTaps={"handled"}
         scrollEnabled={true}
         contentContainerStyle={step == 3 ? styles.contentContainer : {}}
-        style={[styles.container, { paddingHorizontal: step == 2 ? 20 : 0 }]}>
+        style={[styles.container, { paddingHorizontal: step == 2 ? 20 : 0 }]}
+      >
         <View style={styles.stepsContainer}>
           <View style={styles.stepsViewContainer}>
             <TouchableOpacity
               onPress={() => {
                 setStep(1);
               }}
-              disabled={!isPress}>
+              disabled={!isPress}
+            >
               <StepItem number="1" title="Select" />
             </TouchableOpacity>
             <View style={styles.line} />
@@ -224,7 +260,8 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
               onPress={() => {
                 setStep(2);
               }}
-              disabled={!confirm}>
+              disabled={!confirm}
+            >
               <StepItem number="2" title="Confirm" />
             </TouchableOpacity>
             <View style={styles.line} />
@@ -233,19 +270,31 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
           {/* Instructions text */}
-          {step === 1 && < View style={{ justifyContent: "center", alignItems: "center", paddingTop: 10 }}>
-            <CustomText text='Please select three dates for booking ' color="white" size={10} />
-          </View>}
+          {step === 1 && (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                paddingTop: 10,
+              }}
+            >
+              <CustomText
+                text="Please select three dates for booking "
+                color="white"
+                size={10}
+              />
+            </View>
+          )}
         </View>
         {step == 1 && (
           <View style={{ width: windowWidth }}>
             <Date
               onPress={() => {
                 setconfirm(true);
-                navigation.navigate('AdditionalInformation');
+                navigation.navigate("AdditionalInformation");
                 // setStep(2);
               }}
-              selectedDate={date => {
+              selectedDate={(date) => {
                 setSelectedDate(date);
               }}
               dateSelected={selectedDate}
@@ -275,7 +324,8 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                       style={{ height: 30 }}
                       onPress={() => {
                         setIspress(!isPress);
-                      }}>
+                      }}
+                    >
                       <Edit />
                     </TouchableOpacity>
                   </View>
@@ -317,20 +367,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                       textSize={10}
                       fontFamily="regular"
                       onPress={() => {
-                        if (name.length === 0) {
-                          Alert.alert("Validation error", "Full name cannot be empty");
-                        }
-                        if (phone.length === 0) {
-                          Alert.alert("Validation error", "Phone number cannot be empty");
-                        }
-
-                        if (userFullnameValidator(name) && phoneNumberValidator(phone)) {
-                          setIspress(true);
-                        } else {
-                          Alert.alert("Validation error", "Phone number is not valid")
-                        }
-
-
+                        updateUserDataSubmission();
                       }}
                     />
                   </View>
@@ -341,7 +378,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                       containerStyle={styles.inputContaier}
                       inputStyle={styles.input}
                       value={name}
-                      onChangeText={text => {
+                      onChangeText={(text) => {
                         setName(text);
                       }}
                     />
@@ -353,7 +390,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                       containerStyle={styles.inputContaier}
                       inputStyle={styles.input}
                       value={phone}
-                      onChangeText={text => {
+                      onChangeText={(text) => {
                         setPhone(text);
                       }}
                     />
@@ -372,8 +409,9 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                 />
                 <Pressable
                   onPress={() => {
-                    navigation.navigate('ChooseCar');
-                  }}>
+                    navigation.navigate("ChooseCar");
+                  }}
+                >
                   <Edit />
                 </Pressable>
               </View>
@@ -381,7 +419,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                 <View style={styles.rowItem}>
                   <CARICON />
                   <CustomText
-                    text={selectedCarName + ' ' + selectedCarModel}
+                    text={selectedCarName + " " + selectedCarModel}
                     color="black"
                     size={10}
                     style={styles.textItem}
@@ -420,11 +458,11 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                     style={styles.location}
                     onPress={() => {
                       const scheme = Platform.select({
-                        ios: 'maps:0,0?q=',
-                        android: 'geo:0,0?q=',
+                        ios: "maps:0,0?q=",
+                        android: "geo:0,0?q=",
                       });
                       const latLng = `${selecteDealerLat},${selecteDealerLng}`;
-                      const label = 'Custom Label';
+                      const label = "Custom Label";
                       const url = Platform.select({
                         ios: `${scheme}${label}@${latLng}`,
                         android: `${scheme}${latLng}(${label})`,
@@ -439,7 +477,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                   <View style={[styles.rowItem, styles.rightText]}>
                     <PhoneNumberIcon />
                     <CustomText
-                      text={selecteDealerPhone || ''}
+                      text={selecteDealerPhone || ""}
                       color="black"
                       size={10}
                       style={styles.textItem}
@@ -454,27 +492,25 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
                     <View style={styles.rowItem}>
                       <DateIcon color={Colors.BLACK} width={16} height={16} />
                       <CustomText
-                        text={moment(dateData.selectedDate).format('Do MMM')}
+                        text={moment(dateData.selectedDate).format("Do MMM")}
                         color="black"
                         size={10}
                         style={styles.textItem}
                       />
                     </View>
-
                     <View style={[styles.rowItem, styles.rightText]}>
                       <TimeIcon color={Colors.BLACK} />
                       <CustomText
                         num={1}
-                        text={moment(dateData.time).format('HH.mm')}
+                        text={moment(dateData.time).format("HH.mm")}
                         color="black"
                         size={10}
                         style={styles.textItem}
                       />
                     </View>
                   </View>
-                )
-              }
-              )}
+                );
+              })}
             </View>
           </>
         )}
@@ -486,37 +522,35 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
             }}
           />
         )}
-        {step == 2 && (
-          <>
-            {isBooking ? <ActivityIndicator size="large" style={styles.Btn} color={Colors.BUTTON} /> : <CustomButton
-              containerStyle={[
-                styles.Btn,
-                { backgroundColor: !isPress ? Colors.GRAY : Colors.BUTTON },
-              ]}
-              text="Confirm"
-              textSize={16}
-              onPress={() => {
-                setIsBooking(true);
-                handleBookingConfirmation();
 
-              }}
-            />}
+        {step === 2 && (
+          <>
+            {isBooking ? (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 30,
+                }}
+              >
+                <ActivityIndicator size="large" color={Colors.BUTTON} />
+              </View>
+            ) : (
+              <CustomButton
+                containerStyle={[
+                  styles.Btn,
+                  { backgroundColor: !isPress ? Colors.GRAY : Colors.BUTTON },
+                ]}
+                text="Confirm"
+                textSize={16}
+                onPress={() => {
+                  setIsBooking(true);
+                  handleBookingConfirmation();
+                }}
+              />
+            )}
           </>
         )}
-
-        {step === 2 && <CustomButton
-          containerStyle={[
-            styles.Btn,
-            { backgroundColor: !isPress ? Colors.GRAY : Colors.BUTTON },
-          ]}
-          text="Confirm"
-          textSize={16}
-          onPress={() => {
-            setIsBooking(true);
-            handleBookingConfirmation();
-
-          }}
-        />}
 
         {/*   <CustomButton
           containerStyle={[
@@ -532,7 +566,7 @@ const BookingView: FC<BookingViewProps> = ({ navigation, route }) => {
           }}
         /> */}
       </ScrollView>
-    </Screen >
+    </Screen>
   );
 };
 

@@ -142,7 +142,7 @@ export default CarCard;
 
 const styles = StyleSheet.create({
   container: {
-    height: scaleHeightSize(80),
+    height: scaleHeightSize(65),
     backgroundColor: Colors.WHITE,
     borderRadius: 20,
     paddingHorizontal: 12,

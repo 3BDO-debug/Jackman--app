@@ -46,7 +46,7 @@ const DateView = ({
       } else {
         setSelectedDates([
           ...selectedDates,
-          { selectedDate: date, time: new Date(Date.now()) },
+          { selectedDate: date, time: new Date(date).getTime() },
         ]);
         setCurrentSelectedDate(date);
         setNumberOfTriggeredDateSelection(0);
@@ -85,15 +85,14 @@ const DateView = ({
   const onTimePickerChange = useCallback(
     (event, selectedTime) => {
       if (selectedTime) {
-        setCurrentSelectedTime(selectedTime);
+        console.log("time", selectedTime)
         const selectedDatesCopy = [...selectedDates];
-        setSelectedDates(selectedDatesCopy);
         selectedDatesCopy[numberOfSelectedDates - 1].time = currentSelectedTime;
         setSelectedDates(selectedDatesCopy);
-        setCurrentSelectedTime(new Date(Date.now()));
+        setCurrentSelectedTime(selectedTime);
         setNumberOfTriggeredDateSelection(numberOfTriggeredDateSelection + 1);
       }
-    },
+    }, // 20 -> 20:09, 21 -> 22:24, 25 -> 17:24
     [selectedDates, numberOfSelectedDates, numberOfTriggeredDateSelection]
   );
 

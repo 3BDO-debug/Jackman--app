@@ -1,18 +1,18 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { View, ScrollView, TextInput, BackHandler, Alert } from 'react-native';
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import createStyles from './styles';
-import CustomText from '../../components/customText';
-import CustomInput from '../../components/customInput';
-import { Arrow, Logo } from '../../constants/svg';
-import CustomButton from '../../components/customButton';
-import { Colors } from '../../constants/colors';
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { View, ScrollView, TextInput, BackHandler, Alert } from "react-native";
+import { NavigationProp, ParamListBase } from "@react-navigation/native";
+import createStyles from "./styles";
+import CustomText from "../../components/customText";
+import CustomInput from "../../components/customInput";
+import { Arrow, Logo } from "../../constants/svg";
+import CustomButton from "../../components/customButton";
+import { Colors } from "../../constants/colors";
 
-import { useRecoilState, useRecoilValue } from 'recoil';
-import authAtom from '../../recoil/auth';
-import bookingAtom from '../../recoil/booking';
-import phoneNumberValidator from '../../utils/phoneNumberValidator';
-import userFullnameValidator from '../../utils/userFullnameValidator';
+import { useRecoilState, useRecoilValue } from "recoil";
+import authAtom from "../../recoil/auth";
+import bookingAtom from "../../recoil/booking";
+import phoneNumberValidator from "../../utils/phoneNumberValidator";
+import userFullnameValidator from "../../utils/userFullnameValidator";
 
 interface AdditionalInformationViewProps {
   navigation: NavigationProp<ParamListBase>;
@@ -21,60 +21,70 @@ interface AdditionalInformationViewProps {
 const AdditionalInformationView: FC<AdditionalInformationViewProps> = ({
   navigation,
 }) => {
-
   const styles = useMemo(() => createStyles(), []);
   const userData = useRecoilValue(authAtom).userData;
 
-  const [booking, setBooking] = useRecoilState(bookingAtom)
+  const [booking, setBooking] = useRecoilState(bookingAtom);
 
   const [fullName, setFullName] = useState(userData.name);
   const [phone, setPhone] = useState(userData.phoneNumber);
 
-  const [milage, setMilage] = useState('');
+  const [milage, setMilage] = useState("");
 
   const backAction = useCallback(() => {
-    navigation.navigate('Booking', { step: '1' });
+    navigation.navigate("Booking", { step: "1" });
 
     return true;
   }, []);
 
   const milageValidator = () => {
-
     let valid;
-    if (milage[0] === "0" && milage.length !== 1) {
+    const convertedMilage = parseInt(milage, 10);
+    const isValid = !isNaN(convertedMilage) && convertedMilage > 0;
+
+    return isValid;
+  };
+
+  const validationAlert = (type) => {
+    if (type === "phoneNumber") {
+      /* Phone number validaiton goes here */
+      Alert.alert("Validation error", "Phone number is not valid");
+    } else if (type === "userFullname") {
+      /* User full name validaiton goes here */
+      Alert.alert("Validation error", "Full name is not valid");
+    } else if (type === "milage") {
+      Alert.alert("Validation error", "Milage is not valid");
+    }
+  };
+
+  const formSubmissionValidator = () => {
+    let valid;
+    if (!milageValidator()) {
       valid = false;
-      Alert.alert("Validation error", "Milage cannot starts with '0' ");
-    } else if (milage === "0") {
+      validationAlert("milage");
+    } else if (!phoneNumberValidator(phone)) {
       valid = false;
-      Alert.alert("Milage value error", "Milage cannot be '0' ");
+      validationAlert("phoneNumber");
     } else {
       valid = true;
     }
-
-    return valid
-
+    return valid;
   };
-
-
-
-
 
   useEffect(() => {
     const handler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
+      "hardwareBackPress",
+      backAction
     );
     return () => handler.remove();
   }, [backAction]);
 
-
-
-
   return (
     <ScrollView
-      keyboardShouldPersistTaps={'handled'}
+      keyboardShouldPersistTaps={"handled"}
       style={styles.container}
-      contentContainerStyle={styles.contentContainer}>
+      contentContainerStyle={styles.contentContainer}
+    >
       <Logo style={styles.logo} />
 
       <CustomText text="Additional Information " size={25} fontFamily="bold" />
@@ -85,7 +95,7 @@ const AdditionalInformationView: FC<AdditionalInformationViewProps> = ({
         inputStyle={styles.input}
         containerStyle={[styles.nameInput, styles.inputContainer]}
         required={true}
-        onChangeText={text => {
+        onChangeText={(text) => {
           setFullName(text);
         }}
       />
@@ -97,7 +107,7 @@ const AdditionalInformationView: FC<AdditionalInformationViewProps> = ({
         containerStyle={styles.inputContainer}
         required={true}
         keyboardType="phone-pad"
-        onChangeText={text => {
+        onChangeText={(text) => {
           setPhone(text);
         }}
       />
@@ -108,7 +118,7 @@ const AdditionalInformationView: FC<AdditionalInformationViewProps> = ({
         containerStyle={styles.inputContainer}
         keyboardType="numeric"
         required={true}
-        onChangeText={text => {
+        onChangeText={(text) => {
           setMilage(text.trim());
         }}
       />
@@ -133,9 +143,18 @@ const AdditionalInformationView: FC<AdditionalInformationViewProps> = ({
         text="CONTINUE"
         textSize={16}
         onPress={() => {
-          if (milageValidator() && phoneNumberValidator(phone) && userFullnameValidator(fullName)) {
-            setBooking({ ...booking, userData: { userFullname: fullName, userPhone: phone, userCarMileage: milage } });
-            navigation.navigate('Booking', { step: '2' });
+          if (formSubmissionValidator()) {
+            
+            setBooking({
+              ...booking,
+              userData: {
+                userFullname: fullName,
+                userPhone: phone,
+                userCarMileage: milage,
+              },
+            });
+            
+            navigation.navigate("Booking", { step: "2" });
           }
         }}
       />

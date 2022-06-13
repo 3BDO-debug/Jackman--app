@@ -196,7 +196,7 @@ const HomeView: FC<HomeViewProps> = ({ navigation }) => {
           />
         </View>
 
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginTop: 25 }}>
           {cars.length > 0 ? (
             <FlatList
               data={cars}
